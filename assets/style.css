@@ -464,3 +464,4 @@ section{padding:var(--sec) 0}
   body.cta-aktiv{padding-bottom:78px}
 }
 @media (max-width:767px) and (prefers-reduced-motion:reduce){.mobile-cta{transition:none}}
+.social-grid{align-items:start}
