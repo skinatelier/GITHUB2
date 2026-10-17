@@ -498,3 +498,55 @@ section{padding:var(--sec) 0}
 .pmu-anim.arbeitet .pen-vibration{animation:pen-summen .05s steps(2) infinite}
 @keyframes pen-summen{0%{transform:translate(0,0)}50%{transform:translate(.7px,-.5px)}}
 @media (prefers-reduced-motion:reduce){.pmu-anim .braue-vorzeichnung{stroke-dashoffset:0}.pmu-anim.arbeitet .pen-vibration{animation:none}}
+
+/* ===== V12: Vorhang (Logo-Intro) und Einstieg der Startseite ===== */
+.vorhang{display:none}
+.vorhang-an .vorhang{display:flex;position:fixed;inset:0;z-index:100;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+.vorhang-an body{overflow:hidden}
+.vorhang-an .logo-kopf{opacity:0}
+.vorhang-grund{position:absolute;inset:0;background-color:var(--creme);
+  background-image:radial-gradient(circle at 30% 20%, rgba(233,211,204,.75), transparent 55%),radial-gradient(circle at 75% 85%, rgba(230,207,143,.35), transparent 55%);
+  transition:transform 1s cubic-bezier(.76,0,.24,1)}
+.vorhang-logo{position:relative;width:min(74vw,560px);aspect-ratio:1376/741;transform-origin:0 0;animation:vorhang-logo-ein 1.4s var(--ease) both}
+.vorhang-logo img{width:100%;height:100%;
+  -webkit-mask-image:linear-gradient(90deg,#000 40%,transparent 60%);mask-image:linear-gradient(90deg,#000 40%,transparent 60%);
+  -webkit-mask-size:250% 100%;mask-size:250% 100%;-webkit-mask-position:100% 0;mask-position:100% 0;
+  animation:vorhang-wisch 1.3s .15s cubic-bezier(.5,0,.2,1) forwards}
+.vorhang-glanz{position:absolute;inset:0;pointer-events:none;
+  -webkit-mask:url("logo-skin-atelier.svg") center/100% 100% no-repeat;mask:url("logo-skin-atelier.svg") center/100% 100% no-repeat;
+  background:linear-gradient(105deg,transparent 38%,rgba(255,250,235,.95) 50%,transparent 62%) 100% 0/300% 100% no-repeat;
+  animation:vorhang-glanz 1.1s 1.15s ease-in-out forwards}
+.vorhang-claim{position:relative;margin:clamp(16px,3vw,28px) 0 0;font:400 clamp(13px,1.7vw,18px)/1 var(--marke);color:#a8832f;letter-spacing:.06em;opacity:0;
+  animation:vorhang-claim 1.3s .95s var(--ease) forwards;transition:opacity .35s}
+@keyframes vorhang-logo-ein{from{opacity:0;transform:scale(1.06);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes vorhang-wisch{to{-webkit-mask-position:0 0;mask-position:0 0}}
+@keyframes vorhang-glanz{to{background-position:0 0}}
+@keyframes vorhang-claim{to{opacity:1;letter-spacing:.34em}}
+/* Abgang: Vorhang fährt nach oben, Logo fliegt in die Kopfzeile */
+.vorhang-raus .vorhang{cursor:default}
+.vorhang-raus .vorhang-grund{transform:translateY(-100%)}
+.vorhang-raus .vorhang-claim{opacity:0}
+.vorhang-raus .vorhang-logo{animation:none;transition:transform .95s cubic-bezier(.76,0,.24,1)}
+
+/* Einstieg: Porträt fährt hoch, Text erscheint nacheinander */
+.hero-anim .hero-portrait{clip-path:inset(100% 0 0 0 round var(--r));transform:translateY(60px)}
+.hero-anim .hero-portrait img{transform:scale(1.18)}
+.hero-anim .hero-text > *{opacity:0;transform:translateY(22px)}
+.hero-anim .kacheln > *{opacity:0;transform:translateY(16px)}
+.hero-los .hero-portrait{clip-path:inset(0 0 0 0 round var(--r));transform:none;transition:clip-path 1.15s cubic-bezier(.65,0,.15,1),transform 1.15s cubic-bezier(.65,0,.15,1)}
+.hero-los .hero-portrait img{transform:none;transition:transform 1.9s cubic-bezier(.2,.7,.2,1)}
+.hero-los .hero-text > *,.hero-los .kacheln > *{opacity:1;transform:none;transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.hero-los .hero-text > :nth-child(2){transition-delay:.35s}
+.hero-los .hero-text > :nth-child(3){transition-delay:.45s}
+.hero-los .hero-text > :nth-child(4){transition-delay:.55s}
+.hero-los .hero-text > :nth-child(5){transition-delay:.62s}
+.hero-los .hero-text > :nth-child(6){transition-delay:.69s}
+.hero-los .hero-text > :nth-child(7){transition-delay:.76s}
+.hero-los .hero-text > :nth-child(8){transition-delay:.86s}
+.hero-los .hero-text > :nth-child(9){transition-delay:.96s}
+.hero-los .kacheln > *{transition-delay:1s}
+.hero-los .kacheln > :nth-child(2){transition-delay:1.08s}
+.hero-los .kacheln > :nth-child(3){transition-delay:1.16s}
+.hero-los .kacheln > :nth-child(4){transition-delay:1.24s}
+.hero-text .trenner{transform-origin:left}
+@media (max-width:860px){.hero-text .trenner{transform-origin:center}}

@@ -224,3 +224,34 @@ document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.ad
     }, { threshold: .4 }).observe(fig);
   } else { zeigeAlle(); }
 })();
+
+// Startseite: Vorhang mit großem Logo (einmal pro Besuch), danach fährt das Porträt hoch
+(() => {
+  const h = document.documentElement;
+  if (!h.classList.contains('hero-anim')) return;
+  const los = () => h.classList.add('hero-los');
+  const vorhang = document.querySelector('.vorhang');
+  if (!h.classList.contains('vorhang-an') || !vorhang) { requestAnimationFrame(() => requestAnimationFrame(los)); return; }
+
+  let fertig = false;
+  const raus = () => {
+    if (fertig) return; fertig = true;
+    try { sessionStorage.setItem('vorhang', '1'); } catch (e) {}
+    const logo = vorhang.querySelector('.vorhang-logo');
+    const ziel = document.querySelector('.logo-kopf');
+    if (logo && ziel) {
+      const a = logo.getBoundingClientRect(), b = ziel.getBoundingClientRect();
+      const s = b.width / a.width;
+      logo.style.animation = 'none';
+      logo.getBoundingClientRect();
+      requestAnimationFrame(() => { logo.style.transform = `translate(${b.left - a.left}px,${b.top - a.top}px) scale(${s})`; });
+    }
+    h.classList.add('vorhang-raus');
+    setTimeout(los, 380);
+    setTimeout(() => { h.classList.remove('vorhang-an', 'vorhang-raus'); vorhang.remove(); }, 1050);
+  };
+  const timer = setTimeout(raus, 2500);
+  const abkuerzen = () => { clearTimeout(timer); raus(); };
+  vorhang.addEventListener('click', abkuerzen);
+  ['keydown', 'wheel', 'touchstart'].forEach(t => addEventListener(t, abkuerzen, { once: true, passive: true }));
+})();
