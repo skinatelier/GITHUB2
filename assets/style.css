@@ -530,11 +530,11 @@ section{padding:var(--sec) 0}
 
 /* Einstieg: Porträt fährt hoch, Text erscheint nacheinander */
 .hero-anim .hero-portrait{clip-path:inset(100% 0 0 0 round var(--r));transform:translateY(60px)}
-.hero-anim .hero-portrait img{transform:scale(1.18)}
+.hero-anim .hero-portrait img{transform:translateY(5%) scale(1.9)}
 .hero-anim .hero-text > *{opacity:0;transform:translateY(22px)}
 .hero-anim .kacheln > *{opacity:0;transform:translateY(16px)}
 .hero-los .hero-portrait{clip-path:inset(0 0 0 0 round var(--r));transform:none;transition:clip-path 1.15s cubic-bezier(.65,0,.15,1),transform 1.15s cubic-bezier(.65,0,.15,1)}
-.hero-los .hero-portrait img{transform:none;transition:transform 1.9s cubic-bezier(.2,.7,.2,1)}
+.hero-los .hero-portrait img{transform:translateY(5%) scale(1.62);transition:transform 1.9s cubic-bezier(.2,.7,.2,1)}
 .hero-los .hero-text > *,.hero-los .kacheln > *{opacity:1;transform:none;transition:opacity .8s var(--ease),transform .8s var(--ease)}
 .hero-los .hero-text > :nth-child(2){transition-delay:.35s}
 .hero-los .hero-text > :nth-child(3){transition-delay:.45s}
@@ -550,3 +550,76 @@ section{padding:var(--sec) 0}
 .hero-los .kacheln > :nth-child(4){transition-delay:1.24s}
 .hero-text .trenner{transform-origin:left}
 @media (max-width:860px){.hero-text .trenner{transform-origin:center}}
+
+/* ===== V13: Buttons im Boutique-Stil ===== */
+.btn{min-height:52px;padding:0 28px;border-radius:999px;font:600 12.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;border-color:var(--gold);background:transparent}
+.btn:hover{background:#fff;border-color:var(--gold)}
+.btn-primary{background:var(--ink);border-color:var(--ink);color:#fbf6ef;box-shadow:inset 0 0 0 3px var(--ink),inset 0 0 0 4px rgba(230,207,143,.55)}
+.btn-primary:hover{background:#3b3735;border-color:#3b3735;color:#fff;box-shadow:inset 0 0 0 3px #3b3735,inset 0 0 0 4px rgba(230,207,143,.9),0 8px 22px rgba(47,44,43,.18)}
+.btn-ghost{background:rgba(255,255,255,.55)}
+.btn-icon{border-radius:999px;height:50px}
+.einb-knoepfe .btn{min-height:42px;padding:0 18px;font-size:11.5px}
+@media (max-width:767px){.btn{font-size:12px;letter-spacing:.14em}.mobile-cta .btn{min-height:50px}}
+
+/* ===== V13: Behandlungskarten mit Foto ===== */
+.karte-link.mit-foto{padding:0;overflow:hidden;position:relative}
+.karte-link.mit-foto > :not(.karte-foto):not(.icon-rund){margin-left:clamp(24px,3vw,36px);margin-right:clamp(24px,3vw,36px)}
+.karte-link.mit-foto .text-link{margin-bottom:clamp(24px,3vw,34px)}
+.karte-foto{display:block;width:100%;aspect-ratio:16/9;overflow:hidden;border-bottom:1px solid var(--linie-soft)}
+.karte-foto img{width:100%;height:100%;object-fit:cover;transform:scale(1.02);transition:transform 1.2s var(--ease)}
+.karte-link.mit-foto:hover .karte-foto img{transform:scale(1.07)}
+.karte-link.mit-foto .icon-rund{margin:-29px 0 0 clamp(24px,3vw,36px);position:relative;background:#fff;box-shadow:0 6px 16px rgba(120,90,60,.12)}
+.karte-link.mit-foto h3{margin-top:14px}
+
+/* ===== V13: Kontrastband in Anthrazit ===== */
+.band-dunkel{background:var(--ink);color:#fbf6ef;padding:clamp(72px,10vw,128px) 0;position:relative;overflow:hidden}
+.band-dunkel::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 0%,rgba(230,207,143,.16),transparent 50%),radial-gradient(circle at 85% 100%,rgba(233,211,204,.12),transparent 50%);pointer-events:none}
+.band-dunkel .wrap{position:relative}
+.band-marke{font:400 clamp(13px,1.5vw,16px)/1 var(--marke);letter-spacing:.34em;color:var(--gold-hell);margin:0}
+.band-linie{width:0;height:1px;margin:26px auto 28px;background:linear-gradient(90deg,transparent,var(--gold-hell),transparent);transition:width 1.4s var(--ease) .3s}
+.band-dunkel .in .band-linie,.band-dunkel .reveal:not(.in) .band-linie{width:0}
+.band-dunkel .in .band-linie{width:120px}
+.band-claim{font:italic 400 clamp(34px,5vw,64px)/1.12 var(--serif);color:#f3e6c4;margin:0}
+html:not(.js) .band-linie{width:120px}
+
+/* ===== V13: Über mich mit Bogen-Foto ===== */
+.ueber-mich-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(32px,6vw,80px);align-items:center;max-width:calc(1040px + 2*var(--gutter))}
+.ueber-mich-grid .ueber-mich{text-align:left}
+.ueber-mich-grid .ueber-mich .trenner{margin:16px 0 22px}
+.ueber-mich-grid .ueber-mich .quali{margin-left:0}
+.bogen-foto{margin:0;position:relative;aspect-ratio:4/5;border-radius:999px 999px var(--r) var(--r);overflow:hidden;border:1px solid var(--linie);box-shadow:0 18px 44px rgba(120,90,60,.16);background:#e7e8eb}
+.bogen-foto img{width:100%;height:100%;object-fit:cover;object-position:50% 0;transform:translateY(7%) scale(1.75);transform-origin:50% 0}
+@media (max-width:860px){
+  .ueber-mich-grid{grid-template-columns:1fr}
+  .bogen-foto{max-width:300px;margin:0 auto}
+  .ueber-mich-grid .ueber-mich{text-align:center}
+  .ueber-mich-grid .ueber-mich .trenner{margin:16px auto 22px}
+  .ueber-mich-grid .ueber-mich .quali{margin-left:auto;text-align:left}
+}
+
+/* ===== V13: Startbild mit versetztem Goldrahmen ===== */
+.hero-v2 .hero-bild{overflow:visible;position:relative;border:0;box-shadow:none;background:none}
+.hero-v2 .hero-bild::before{content:"";position:absolute;inset:0;transform:translate(16px,16px);border:1px solid var(--gold);border-radius:var(--r);opacity:.75;pointer-events:none}
+.hero-v2 .hero-portrait{aspect-ratio:auto}
+.hero-v2 .hero-portrait .hero-rahmen{display:block;position:relative;aspect-ratio:1/1;border-radius:var(--r);overflow:hidden;border:1px solid var(--linie);box-shadow:0 18px 44px rgba(120,90,60,.16);background:#e7e8eb}
+.hero-anim .hero-portrait .hero-rahmen{clip-path:inset(100% 0 0 0 round var(--r))}
+.hero-los .hero-portrait .hero-rahmen{clip-path:inset(0 0 0 0 round var(--r));transition:clip-path 1.15s cubic-bezier(.65,0,.15,1)}
+.hero-anim .hero-portrait{clip-path:none}
+.hero-anim .hero-bild::before{opacity:0;transform:translate(0,0)}
+.hero-los .hero-bild::before{opacity:.75;transform:translate(16px,16px);transition:opacity .8s .9s,transform 1s .9s var(--ease)}
+@media (max-width:767px){
+  .hero-v2 .hero-bild::before{transform:translate(10px,10px)}
+  .hero-los .hero-bild::before{transform:translate(10px,10px)}
+  .hero-v2 .hero-portrait .hero-rahmen{aspect-ratio:5/4}
+  .hero-v2 .hero-bild{margin-right:10px}
+}
+
+/* ===== V13: Bewertungs-Platzhalter ===== */
+.einbettung:not(.geladen){border:1px solid var(--linie);background:linear-gradient(180deg,#fff,rgba(255,255,255,.6));text-align:center;padding:24px 20px}
+.einb-sterne{color:var(--gold);letter-spacing:.3em;font-size:18px;margin:0 0 8px}
+.einb-titel{font:400 24px/1.2 var(--serif);margin:0 0 8px}
+.einb-text{font-size:13px;max-width:44ch;margin:0 auto 16px}
+.einb-knoepfe{justify-content:center}
+/* Kopfzeilen-Button bleibt wie in V10 abgenommen: hell mit Goldrand */
+.header-cta{background:transparent;color:var(--ink);border-color:var(--gold);box-shadow:none;min-height:44px;padding:0 22px;font-size:12px;letter-spacing:.17em}
+.header-cta:hover{background:var(--ink);border-color:var(--ink);color:#fbf6ef;box-shadow:none}
