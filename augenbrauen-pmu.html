@@ -17,12 +17,12 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/cinzel.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=13">
+<link rel="stylesheet" href="assets/style.css?v=14">
 
 </head>
 <body>
 <a class="skip" href="#main">Zum Inhalt springen</a>
-<div class="preview-bar">Vorschau V10 · nicht öffentlich · offene Angaben sind markiert</div>
+<div class="preview-bar">Vorschau V11 · nicht öffentlich · offene Angaben sind markiert</div>
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="index.html"><img class="logo-kopf" src="assets/logo-skin-atelier.svg" width="1376" height="741" alt="SKIN ATELIER by Malina – zur Startseite"></a>
@@ -48,11 +48,41 @@
 
 <section>
   <div class="wrap two">
-    <div class="reveal"><p class="label gold">Was ist PMU?</p><h2>Pigment statt<br>täglichem Nachziehen.</h2></div>
-    <div class="reveal">
+    <div class="reveal"><p class="label gold">Was ist PMU?</p><h2>Pigment statt<br>täglichem Nachziehen.</h2>
       <p class="lead">Beim Permanent Make-up werden Farbpigmente in die oberste Hautschicht eingebracht. Das Ergebnis hält lange, verblasst aber mit der Zeit und wird bei Bedarf aufgefrischt.</p>
       <p class="muted">Ich arbeite mit der Technik <strong>Powder Brows</strong>: Die Pigmente werden fein schattiert eingebracht. Das Ergebnis wirkt weich und gepudert, wie dezent geschminkte Brauen.</p>
     </div>
+    <figure class="pmu-anim reveal" aria-hidden="true">
+      <svg viewBox="0 40 520 280" role="presentation">
+        <defs>
+          <clipPath id="braue-clip"><path d="M60,172 C58,150 70,138 95,134 C170,122 260,98 330,92 C380,88 430,112 472,150 C440,134 395,122 340,124 C260,130 170,152 100,172 C85,177 66,180 60,172 Z"/></clipPath>
+          <linearGradient id="pen-koerper" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#f6eedf"/><stop offset="1" stop-color="#e6cf8f"/>
+          </linearGradient>
+          <radialGradient id="pen-glanz"><stop offset="0" stop-color="#e6cf8f" stop-opacity=".9"/><stop offset="1" stop-color="#e6cf8f" stop-opacity="0"/></radialGradient>
+        </defs>
+        <g transform="translate(0,110)">
+          <path class="braue-vorzeichnung" pathLength="1" d="M60,172 C58,150 70,138 95,134 C170,122 260,98 330,92 C380,88 430,112 472,150 C440,134 395,122 340,124 C260,130 170,152 100,172 C85,177 66,180 60,172 Z"/>
+          <g class="braue-pigment" clip-path="url(#braue-clip)"></g>
+          <g class="pmu-pen">
+            <circle class="pen-glanz" r="11" fill="url(#pen-glanz)"/>
+            <g transform="rotate(-52) scale(.78)">
+              <g class="pen-vibration">
+                <line x1="0" y1="0" x2="12" y2="0" class="pen-nadel"/>
+                <path d="M12,-1.6 L36,-7 L36,7 L12,1.6 Z" class="pen-teil"/>
+                <rect x="36" y="-9" width="74" height="18" rx="3" class="pen-teil"/>
+                <path d="M46,-9 v18 M56,-9 v18 M66,-9 v18 M76,-9 v18 M86,-9 v18 M96,-9 v18" class="pen-riffel"/>
+                <rect x="110" y="-10.5" width="118" height="21" rx="6" class="pen-teil"/>
+                <line x1="122" y1="-4" x2="214" y2="-4" class="pen-licht"/>
+                <rect x="228" y="-8" width="16" height="16" rx="4" class="pen-teil"/>
+                <path d="M244,0 C262,0 274,8 284,20" class="pen-kabel"/>
+              </g>
+            </g>
+          </g>
+        </g>
+      </svg>
+      <figcaption>Powder Brows: Punkt für Punkt fein schattiert</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -160,6 +190,6 @@
   <a class="btn btn-primary" href="kontakt.html?anliegen=Augenbrauen-PMU">Termin anfragen</a>
   <a class="btn btn-ghost btn-icon" href="https://wa.me/4916095902220?text=Hallo%20Malina%2C%20ich%20interessiere%20mich%20f%C3%BCr%20Augenbrauen-PMU%20und%20m%C3%B6chte%20gerne%20einen%20Termin%20anfragen." aria-label="Per WhatsApp schreiben"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.6a8.4 8.4 0 0 1-12.4 7.4L3.5 20.5l1.6-4.4A8.4 8.4 0 1 1 20.5 11.6Z"/><path d="M9 9.2c.2 1.9 2 4 4 4.6l1.1-1.1 1.8.8-.4 1.6c-3.4.2-6.6-3-6.4-6.4l1.6-.4.8 1.8L9 9.2Z"/></svg></a>
 </div>
-<script src="assets/site.js?v=13" defer></script>
+<script src="assets/site.js?v=14" defer></script>
 </body>
 </html>

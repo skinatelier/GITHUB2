@@ -120,3 +120,107 @@ document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.ad
   addEventListener('resize', pruefen);
   pruefen();
 })();
+
+// PMU-Pen-Animation (Augenbrauen-PMU): Vorzeichnung, dann Powder-Schattierung Punkt für Punkt
+(() => {
+  const fig = document.querySelector('.pmu-anim');
+  if (!fig) return;
+  const svg = fig.querySelector('svg');
+  const form = fig.querySelector('.braue-vorzeichnung');
+  const lage = fig.querySelector('.braue-pigment');
+  const pen = fig.querySelector('.pmu-pen');
+  const NS = 'http://www.w3.org/2000/svg';
+  const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Punkte innerhalb der Brauenform, vorn heller (Ombré), zum Ende dichter
+  const innen = (x, y) => {
+    try { const p = svg.createSVGPoint(); p.x = x; p.y = y; return form.isPointInFill(p); } catch (e) { return true; }
+  };
+  const glatt = (a, b, v) => { const t = Math.min(1, Math.max(0, (v - a) / (b - a))); return t * t * (3 - 2 * t); };
+  const punkte = [];
+  for (let i = 0; i < 5200 && punkte.length < 1500; i++) {
+    const x = 56 + Math.random() * 420, y = 86 + Math.random() * 98;
+    const u = (x - 56) / 420;
+    if (Math.random() > .3 + .7 * glatt(0, .4, u) || !innen(x, y)) continue;
+    const c = document.createElementNS(NS, 'circle');
+    c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1));
+    c.setAttribute('r', (.7 + Math.random() * .9).toFixed(2));
+    c.dataset.o = ((.12 + .5 * glatt(0, .45, u)) * (.6 + Math.random() * .4)).toFixed(2);
+    c.style.opacity = 0;
+    punkte.push({ x, y, c });
+  }
+  // Reihenfolge wie beim Schattieren: in schmalen Bahnen von vorn nach hinten, auf und ab
+  punkte.sort((a, b) => {
+    const sa = Math.floor(a.x / 7), sb = Math.floor(b.x / 7);
+    return sa - sb || (sa % 2 ? b.y - a.y : a.y - b.y);
+  });
+  punkte.forEach(p => lage.appendChild(p.c));
+  const zeigeAlle = () => punkte.forEach(p => { p.c.style.opacity = p.c.dataset.o; });
+
+  let px = 520, py = 20;
+  const setzePen = (x, y) => pen.setAttribute('transform', `translate(${x.toFixed(1)},${y.toFixed(1)})`);
+  setzePen(px, py);
+
+  if (ruhig) { zeigeAlle(); fig.classList.add('pen-an'); setzePen(478, 150); return; }
+
+  const DAUER = 5600;
+  let laeuft = false, sichtbar = false, timer = 0;
+  const warte = ms => new Promise(r => { timer = setTimeout(r, ms); });
+
+  async function durchlauf() {
+    laeuft = true;
+    punkte.forEach(p => { p.c.style.transition = ''; p.c.style.opacity = 0; });
+    fig.classList.remove('zeichnet', 'pen-an', 'arbeitet');
+    await warte(400);
+    fig.classList.add('zeichnet');                    // Vorzeichnung
+    await warte(1700);
+    px = 470; py = 30; setzePen(px, py);
+    fig.classList.add('pen-an');
+    await new Promise(fertig => {                      // Pen fährt zum Brauenanfang
+      const ziel = punkte[0];
+      const schritt = () => {
+        px += (ziel.x - px) * .12; py += (ziel.y - py) * .12; setzePen(px, py);
+        if (Math.hypot(ziel.x - px, ziel.y - py) < 1.5) return fertig();
+        requestAnimationFrame(schritt);
+      };
+      requestAnimationFrame(schritt);
+    });
+    fig.classList.add('arbeitet');
+    await new Promise(fertig => {                      // Schattieren
+      const start = performance.now();
+      let n = 0;
+      const schritt = jetzt => {
+        const soll = Math.min(punkte.length, Math.floor((jetzt - start) / DAUER * punkte.length));
+        for (; n < soll; n++) punkte[n].c.style.opacity = punkte[n].c.dataset.o;
+        const z = punkte[Math.min(n, punkte.length - 1)];
+        px += (z.x - px) * .3; py += (z.y - py) * .3; setzePen(px, py);
+        if (n >= punkte.length) return fertig();
+        requestAnimationFrame(schritt);
+      };
+      requestAnimationFrame(schritt);
+    });
+    fig.classList.remove('arbeitet');
+    await new Promise(fertig => {                      // Pen hebt ab
+      const schritt = () => {
+        px += (500 - px) * .06; py += (20 - py) * .06; setzePen(px, py);
+        if (py < 30) return fertig();
+        requestAnimationFrame(schritt);
+      };
+      requestAnimationFrame(schritt);
+    });
+    fig.classList.remove('pen-an');
+    await warte(2800);                                 // Ergebnis stehen lassen
+    punkte.forEach(p => { p.c.style.transition = 'opacity .8s'; p.c.style.opacity = 0; });
+    fig.classList.remove('zeichnet');
+    await warte(1000);
+    laeuft = false;
+    if (sichtbar) durchlauf();
+  }
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(es => {
+      sichtbar = es[0].isIntersecting;
+      if (sichtbar && !laeuft) durchlauf();
+    }, { threshold: .4 }).observe(fig);
+  } else { zeigeAlle(); }
+})();
