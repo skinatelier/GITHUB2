@@ -5,7 +5,6 @@
 @font-face{font-family:"Cinzel";src:url("fonts/cinzel.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:300 700;font-display:swap;src:url("fonts/cormorant-garamond.woff2") format("woff2")}
 @font-face{font-family:"Cormorant Garamond";font-style:italic;font-weight:400;font-display:swap;src:url("fonts/cormorant-garamond-italic.woff2") format("woff2")}
-@font-face{font-family:"Manrope";font-style:normal;font-weight:200 800;font-display:swap;src:url("fonts/manrope.woff2") format("woff2")}
 
 :root{
   --creme:#fdf9f6; --beige:#f3e9e1; --rose:#e9d3cc; --rose-dunkel:#b98b80;
@@ -16,7 +15,7 @@
   --schatten:0 10px 30px rgba(120,90,60,.10);
   --marke:"Cinzel", "Cormorant Garamond", Georgia, serif;
   --serif:"Cormorant Garamond", "Didot", "Bodoni 72", Georgia, serif;
-  --sans:"Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --sans:-apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   --wrap:1180px; --gutter:clamp(20px,4vw,48px);
   --sec:clamp(64px,8vw,112px);
   --r:18px;
@@ -318,3 +317,90 @@ section{padding:var(--sec) 0}
 .hero-photo.r169{aspect-ratio:21/9;max-width:1040px;margin-left:auto;margin-right:auto}
 @media (max-width:767px){.hero-photo.r169{aspect-ratio:4/3}}
 .ways span.icon-rund{min-width:0;width:40px;height:40px;padding:0}
+
+/* ===== V2 nach Briefing ===== */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.marke{white-space:nowrap}
+.nur-mobil{display:none}
+.nur-mobil-grid{display:none !important}
+
+/* Einstieg: echtes Wandlogo-Foto + GLOW WITH CONFIDENCE */
+.hero-v2{padding:clamp(28px,5vw,72px) 0 clamp(48px,6vw,88px)}
+.hero-v2-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,72px);align-items:center}
+.hero-bild{margin:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--linie);box-shadow:0 18px 44px rgba(120,90,60,.16)}
+.hero-bild img{width:100%;height:100%;aspect-ratio:4/3;object-fit:cover}
+.glow{font:400 clamp(26px,3.4vw,44px)/1.15 var(--marke);letter-spacing:.12em;color:#a8832f;margin:0 0 12px}
+.hero-text .zusatz{font:500 12.5px/1.6 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--grau);margin:0}
+.hero-text .trenner{margin:20px 0}
+.intro{color:var(--grau);font-size:16.5px;line-height:1.7;margin:0 0 12px;max-width:52ch}
+.hero-text .claim{margin:22px 0 0}
+.hero-text .actions{margin-top:26px}
+
+/* Karten mit Link */
+.karte-link{display:flex;flex-direction:column;align-items:flex-start;text-decoration:none;color:var(--ink);background:var(--karte);border:1px solid var(--linie);border-radius:var(--r);padding:clamp(24px,3vw,36px);transition:background-color .2s,box-shadow .2s,transform .2s}
+.karte-link:hover{background:#fff;box-shadow:0 12px 30px rgba(120,90,60,.12);transform:translateY(-2px)}
+.karte-link h3{margin-top:18px}
+.karte-link p{color:var(--grau)}
+.karte-link .text-link{margin-top:auto}
+.icon-rund.gross{width:58px;height:58px}
+.icon-rund.gross svg{width:26px;height:26px}
+
+/* Echte Fotos */
+.foto{margin:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--linie);box-shadow:var(--schatten);background:var(--beige)}
+.foto img{width:100%;height:100%;object-fit:cover}
+.foto.r45 img{aspect-ratio:4/5}
+.foto.r32 img{aspect-ratio:3/2}
+.foto.portrait img{aspect-ratio:4/5;object-position:50% 12%}
+.foto.wide-foto img{aspect-ratio:16/7}
+.atelier-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px;margin-top:clamp(28px,4vw,44px)}
+.atelier-grid .foto img{aspect-ratio:auto;height:clamp(260px,32vw,440px)}
+
+/* Qualifikationen */
+.quali{list-style:none;padding:0;margin:22px 0 26px;display:grid;gap:10px}
+.quali li{display:flex;gap:12px;align-items:flex-start;background:var(--karte);border:1px solid var(--linie-soft);border-radius:12px;padding:12px 16px;font-size:15.5px}
+.quali .stern{color:var(--gold);line-height:1.5}
+
+/* Bewertungen */
+.bewertungen{margin-top:28px;text-align:left}
+.option-karte{display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 16px;background:var(--karte);border:1px solid var(--linie);border-radius:14px;text-decoration:none;color:var(--ink);transition:background-color .2s}
+.option-karte:hover{background:#fff}
+.opt-text{display:flex;flex-direction:column;line-height:1.3}
+.opt-text strong{font-weight:600}
+.opt-text small{color:var(--grau);font-size:13.5px}
+.option-karte .ext{margin-left:auto;color:var(--grau)}
+
+/* Anfahrt */
+.anfahrt .card h3{margin:14px 0 8px}
+.anfahrt .card p{color:var(--grau);margin:0}
+.center .lead,.lead.center{margin-left:auto;margin-right:auto}
+
+/* Kleine Bildschirme: nichts darf breiter werden als der Bildschirm */
+.split > *,.two > *,.three > *,.hero-v2-grid > *,.footer-grid > *{min-width:0}
+.field select,.field input,.field textarea{max-width:100%;min-width:0}
+.ways a,.ways div{min-width:0;flex-wrap:wrap}
+.ways span:last-child{overflow-wrap:anywhere}
+.btn{white-space:nowrap}
+.btn-icon{padding:0;width:50px;flex:0 0 50px !important}
+.btn-icon svg{width:22px;height:22px;color:var(--gold)}
+
+@media (max-width:900px){
+  .atelier-grid{grid-template-columns:1fr 1fr}
+  .atelier-grid .foto-gross{grid-column:1/-1}
+}
+@media (max-width:767px){
+  .hero-v2-grid{grid-template-columns:1fr;gap:24px}
+  .hero-text{text-align:center}
+  .hero-text .trenner{margin:16px auto}
+  .intro{margin-left:auto;margin-right:auto}
+  .hero-text .actions{justify-content:center}
+  .nur-mobil{display:inline}
+  .hero-text .punkt{display:none}
+  .nur-mobil-grid{display:grid !important;margin:4px 0 0;max-width:none}
+  .atelier-grid .foto img{height:auto;aspect-ratio:3/4}
+  .atelier-grid .foto-gross img{aspect-ratio:4/3}
+  .ways a > span:nth-child(2){display:none}
+}
+@media (max-width:380px){
+  .kacheln{grid-template-columns:repeat(2,1fr)}
+  .glow{letter-spacing:.08em}
+}

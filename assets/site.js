@@ -65,3 +65,8 @@ if (form) {
     location.href = 'mailto:info@skinatelier.studio?subject=' + encodeURIComponent('Terminanfrage: ' + form.elements.anliegen.value) + '&body=' + encodeURIComponent(text());
   });
 }
+
+// Navigation: auf iPhone/iPad Apple Karten, sonst Google Maps
+if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document) {
+  document.querySelectorAll('[data-route]').forEach(a => a.href = 'https://maps.apple.com/?daddr=Breite+Str.+23,+13187+Berlin');
+}
