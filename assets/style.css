@@ -451,3 +451,16 @@ section{padding:var(--sec) 0}
 .einb-knoepfe{display:flex;flex-wrap:wrap;gap:8px}
 .einb-knoepfe .btn{min-height:44px;padding:0 18px;font-size:14.5px}
 @media (max-width:767px){.social-grid{grid-template-columns:1fr}.social-links .btn{flex:1 1 100%}}
+
+/* ===== V5: Kopfzeile mit Luft, Terminleiste erst nach dem ersten Button ===== */
+.header-inner{min-height:0 !important;padding-top:14px;padding-bottom:14px}
+.logo-kopf{width:190px}
+@media (max-width:1080px){.logo-kopf{width:160px}.header-inner{padding-top:10px;padding-bottom:10px}}
+@media (max-width:767px){
+  .logo-kopf{width:138px}
+  .mobile-cta{transform:translateY(110%);transition:transform .3s var(--ease)}
+  .mobile-cta.sichtbar{transform:none}
+  body{padding-bottom:0}
+  body.cta-aktiv{padding-bottom:78px}
+}
+@media (max-width:767px) and (prefers-reduced-motion:reduce){.mobile-cta{transition:none}}

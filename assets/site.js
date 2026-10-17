@@ -103,3 +103,20 @@ document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.ad
   try { Object.keys(localStorage).filter(k => k.startsWith('einwilligung-')).forEach(k => localStorage.removeItem(k)); } catch (err) {}
   a.textContent = 'Erledigt: Alle Einwilligungen wurden zurückgesetzt.';
 }));
+
+// Untere Terminleiste (Handy): immer sichtbar, außer wenn ein großer Termin-Button im Bild ist; auf der Kontaktseite nie
+(() => {
+  const leiste = document.querySelector('.mobile-cta');
+  if (!leiste) return;
+  if (/kontakt\.html$/.test(location.pathname)) { leiste.remove(); return; }
+  document.body.classList.add('cta-aktiv');
+  const knoepfe = [...document.querySelectorAll('main .btn-primary')];
+  const pruefen = () => {
+    const h = window.innerHeight;
+    const imBild = knoepfe.some(k => { const r = k.getBoundingClientRect(); return r.bottom > 0 && r.top < h - 70; });
+    leiste.classList.toggle('sichtbar', !imBild);
+  };
+  addEventListener('scroll', pruefen, { passive: true });
+  addEventListener('resize', pruefen);
+  pruefen();
+})();

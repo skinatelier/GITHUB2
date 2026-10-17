@@ -17,12 +17,12 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/cinzel.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=4">
+<link rel="stylesheet" href="assets/style.css?v=10">
 
 </head>
 <body>
 <a class="skip" href="#main">Zum Inhalt springen</a>
-<div class="preview-bar">Vorschau V4 · nicht öffentlich · offene Angaben sind markiert</div>
+<div class="preview-bar">Vorschau V8 · nicht öffentlich · offene Angaben sind markiert</div>
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="index.html"><img class="logo-kopf" src="assets/logo-skin-atelier.svg" width="1376" height="741" alt="SKIN ATELIER by Malina – zur Startseite"></a>
@@ -61,7 +61,7 @@
   <div class="price-main">
     <h3 class="price-name">Augenbrauen-PMU (Powder Brows)<span class="tag">zu bestätigen</span></h3>
     <p class="price-text">Pigmentierung der Augenbrauen nach ausführlicher Beratung und gemeinsamer Vorzeichnung.</p>
-    <p class="price-steps">Beratung · Vorzeichnung · Pigmentierung · Nacharbeit: Umfang und Preis folgen</p>
+    <p class="price-steps">inkl. Beratung · Vorzeichnung · Pigmentierung · Standard-Nacharbeit nach der Abheilung</p>
   </div>
   <div class="price-meta"><span class="price-dur"><span class="tag">folgt</span></span><span class="price-val"><span class="tag">folgt</span></span></div>
 </li>
@@ -74,7 +74,7 @@
   <div class="price-meta"><span class="price-dur"><span class="tag">folgt</span></span><span class="price-val"><span class="tag">folgt</span></span></div>
 </li></ul></div>
 
-    <p class="price-foot">Laut § 19 UStG wird keine Umsatzsteuer berechnet. Bezahlung: <span class="tag">folgt</span></p>
+    <p class="price-foot">Laut § 19 UStG wird keine Umsatzsteuer berechnet. Du bezahlst vor Ort, mit Karte über das S-POS-Terminal oder bar.</p>
   </div>
 </section>
 
@@ -89,9 +89,11 @@
       </div>
       <div>
         <div class="faq faq-group reveal">
-          <p class="label">Termin</p>
+          <p class="label" id="termin">Termin</p>
           <details><summary>Wie vereinbare ich einen Termin?</summary><div class="answer">Am einfachsten per WhatsApp oder über das Anfrageformular. Ich melde mich mit einem Vorschlag; erst nach meiner Bestätigung steht der Termin fest.</div></details>
-          <details><summary>Kann ich meinen Termin verschieben oder absagen?</summary><div class="answer">Malinas Regel zur Terminänderung folgt. <span class="tag">Text folgt</span></div></details>
+          <details><summary>Kann ich meinen Termin verschieben oder absagen?</summary><div class="answer">Bis 48 Stunden vor dem Termin kannst du kostenlos absagen oder verschieben. Bei einer Absage weniger als 48 Stunden vorher berechne ich 20 % des Behandlungspreises, weniger als 24 Stunden vorher oder am Tag des Termins 40 %. Melde dich am besten per WhatsApp, dann finden wir schnell einen neuen Termin.</div></details>
+          <details><summary>Wie kann ich bezahlen?</summary><div class="answer">Du bezahlst vor Ort, mit Karte über das S-POS-Terminal oder bar.</div></details>
+          <details><summary>Wann sind Termine möglich?</summary><div class="answer">Termine vergebe ich nach Vereinbarung. Schreib mir einfach, wann es dir passt.</div></details>
           <details><summary>Wie finde ich das Atelier?</summary><div class="answer">Breite Straße 23, 13187 Berlin-Pankow, in den Räumen von Beauty Lashes Berlin. Details unter <a href="kontakt.html#anfahrt">Anfahrt</a>.</div></details>
         </div>
         <div class="faq faq-group reveal">
@@ -101,7 +103,7 @@
         </div>
         <div class="faq faq-group reveal">
           <p class="label">Augenbrauen-PMU</p>
-          <details><summary>Ist die Nacharbeit im Preis enthalten?</summary><div class="answer">Ob und in welchem Zeitraum eine Nacharbeit enthalten ist, steht hier in Kürze. <span class="tag">folgt</span></div></details>
+          <details><summary>Ist die Nacharbeit im Preis enthalten?</summary><div class="answer">Ja. Zu jeder PMU-Behandlung gehört eine Nacharbeit nach der Abheilung. Eine Standard-Nacharbeit ist im Preis enthalten: Wir schauen uns das Ergebnis gemeinsam an und gleichen Form und Farbe bei Bedarf aus. Ist zusätzlicher Aufwand nötig, zum Beispiel weil die Pflegehinweise nicht eingehalten wurden, kann ein Aufpreis nach Aufwand anfallen.</div></details>
           <details><summary>Wie lange hält das Ergebnis?</summary><div class="answer">Das ist von Haut zu Haut verschieden. Pigmente verblassen mit der Zeit; eine Auffrischung ist üblich. Ein bestimmtes Ergebnis kann niemand versprechen.</div></details>
           <details><summary>Muss ich vorher zur Beratung?</summary><div class="answer">Ja, die Beratung ist der erste Schritt. Dort klären wir Form, Farbe und ob PMU für dich geeignet ist.</div></details>
         </div>
@@ -140,8 +142,8 @@
 </footer>
 <div class="mobile-cta">
   <a class="btn btn-primary" href="kontakt.html">Termin anfragen</a>
-  <a class="btn btn-ghost btn-icon" href="https://wa.me/4916095902220" aria-label="Per WhatsApp schreiben"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.6a8.4 8.4 0 0 1-12.4 7.4L3.5 20.5l1.6-4.4A8.4 8.4 0 1 1 20.5 11.6Z"/><path d="M9 9.2c.2 1.9 2 4 4 4.6l1.1-1.1 1.8.8-.4 1.6c-3.4.2-6.6-3-6.4-6.4l1.6-.4.8 1.8L9 9.2Z"/></svg></a>
+  <a class="btn btn-ghost btn-icon" href="https://wa.me/4916095902220?text=Hallo%20Malina%2C%20ich%20m%C3%B6chte%20gerne%20einen%20Termin%20im%20SKIN%20ATELIER%20anfragen." aria-label="Per WhatsApp schreiben"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.6a8.4 8.4 0 0 1-12.4 7.4L3.5 20.5l1.6-4.4A8.4 8.4 0 1 1 20.5 11.6Z"/><path d="M9 9.2c.2 1.9 2 4 4 4.6l1.1-1.1 1.8.8-.4 1.6c-3.4.2-6.6-3-6.4-6.4l1.6-.4.8 1.8L9 9.2Z"/></svg></a>
 </div>
-<script src="assets/site.js?v=4" defer></script>
+<script src="assets/site.js?v=10" defer></script>
 </body>
 </html>
