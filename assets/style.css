@@ -465,3 +465,16 @@ section{padding:var(--sec) 0}
 }
 @media (max-width:767px) and (prefers-reduced-motion:reduce){.mobile-cta{transition:none}}
 .social-grid{align-items:start}
+
+/* ===== V10: Navigation im Boutique-Stil ===== */
+.main-nav ul{gap:34px}
+.main-nav > ul > li > a{font:500 12.5px/1 var(--sans);letter-spacing:.17em;text-transform:uppercase;color:var(--ink);padding:10px 0 9px;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.main-nav > ul > li > a:hover{color:var(--gold-text);border-color:var(--gold)}
+.main-nav > ul > li > a[aria-current="page"]{color:var(--gold-text);border-color:var(--gold)}
+.sub a{font:500 14px/1.3 var(--sans);letter-spacing:.02em;text-transform:none}
+.header-cta{min-height:44px;padding:0 22px;border-radius:999px;background:transparent;color:var(--ink);border:1px solid var(--gold);font:600 12px/1 var(--sans);letter-spacing:.17em;text-transform:uppercase;box-shadow:none}
+.header-cta:hover{background:var(--ink);border-color:var(--ink);color:#fbf6ef;transform:none;box-shadow:none}
+.menu-btn{font:600 12px/1 var(--sans);letter-spacing:.17em;text-transform:uppercase;border-color:var(--gold);border-radius:999px;background:transparent;padding:0 18px}
+@media (max-width:1080px){
+  .main-nav.open > ul > li > a{font-size:14px;letter-spacing:.14em;padding:16px 0}
+}
