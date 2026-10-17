@@ -404,3 +404,33 @@ section{padding:var(--sec) 0}
   .kacheln{grid-template-columns:repeat(2,1fr)}
   .glow{letter-spacing:.08em}
 }
+
+/* ===== V3: Original-Logo im Kopf, Portrait im Einstieg ===== */
+.logo-kopf{width:210px;height:auto;display:block}
+.header-inner{min-height:104px}
+.logo-fuss{width:250px;height:auto;margin-bottom:16px}
+/* Portrait eng: Gesicht, Hände, Oberkörper */
+.hero-portrait{aspect-ratio:1/1}
+.hero-portrait img{aspect-ratio:auto;width:100%;height:auto;transform:scale(1.85);transform-origin:50% 9%}
+/* Atelier: Wandlogo breit oben, Fenster hoch rechts, darunter Liege und Ecke */
+.atelier-grid.vier{grid-template-columns:1fr 1fr 1fr;grid-template-rows:clamp(220px,24vw,340px) clamp(200px,20vw,280px)}
+.atelier-grid.vier .foto img{width:100%;height:100%;aspect-ratio:auto}
+.g-logo{grid-column:1/3;grid-row:1}
+.g-fenster{grid-column:3;grid-row:1/3}
+.g-liege{grid-column:1;grid-row:2}
+.g-ecke{grid-column:2;grid-row:2}
+.g-logo img{object-position:50% 45%}
+.portrait-ganz img{aspect-ratio:4/5;object-position:50% 20%}
+@media (max-width:1080px){.logo-kopf{width:170px}.header-inner{min-height:88px}}
+@media (max-width:767px){
+  .logo-kopf{width:150px}.header-inner{min-height:80px}
+  .atelier-grid.vier{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .g-logo{grid-column:1/-1;grid-row:auto}.g-logo img{aspect-ratio:4/3 !important;height:auto !important}
+  .g-fenster,.g-liege,.g-ecke{grid-column:auto;grid-row:auto}
+  .g-fenster img,.g-ecke img{aspect-ratio:3/4 !important;height:auto !important}
+  .g-liege{grid-column:1/-1}.g-liege img{aspect-ratio:4/3 !important;height:auto !important}
+}
+.ueber-mich{text-align:center}
+.ueber-mich .lead{margin-left:auto;margin-right:auto}
+.ueber-mich .trenner{margin:16px auto 22px}
+.ueber-mich .quali{text-align:left;max-width:600px;margin-left:auto;margin-right:auto}
