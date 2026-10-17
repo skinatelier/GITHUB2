@@ -246,9 +246,40 @@ document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.ad
       logo.getBoundingClientRect();
       requestAnimationFrame(() => { logo.style.transform = `translate(${b.left - a.left}px,${b.top - a.top}px) scale(${s})`; });
     }
+    // „GLOW WITH CONFIDENCE“: jede Zeile gleitet an ihren Platz im Einstieg und blendet dort über
+    const claim = vorhang.querySelector('.vorhang-claim');
+    const glow = document.querySelector('.hero-text .glow');
+    if (claim && glow) {
+      const cz = [...claim.children], gz = [...glow.children];
+      const cs = getComputedStyle(claim), gs = getComputedStyle(glow);
+      const s = parseFloat(gs.fontSize) / parseFloat(cs.fontSize);
+      claim.style.opacity = cs.opacity;
+      cz.forEach(z => { z.style.letterSpacing = cs.letterSpacing; });
+      claim.style.animation = 'none';
+      glow.style.transition = 'none'; glow.style.transform = 'none';
+      // linke Kante festhalten, damit die Zeile beim Ändern des Buchstabenabstands nicht verrutscht
+      const p = claim.getBoundingClientRect();
+      claim.style.width = p.width + 'px';
+      cz.forEach(z => { z.style.marginLeft = (z.getBoundingClientRect().left - p.left) + 'px'; z.style.marginRight = '0'; });
+      const wege = cz.map((z, i) => {
+        const c = z.getBoundingClientRect(), g = (gz[i] || glow).getBoundingClientRect();
+        return [g.left - c.left, (g.top + g.height / 2) - (c.top + c.height * s / 2)];
+      });
+      requestAnimationFrame(() => {
+        const bahn = '.95s cubic-bezier(.76,0,.24,1)';
+        cz.forEach((z, i) => {
+          z.style.transition = `transform ${bahn}, letter-spacing ${bahn}`;
+          z.style.transform = `translate(${wege[i][0]}px,${wege[i][1]}px) scale(${s})`;
+          z.style.letterSpacing = (parseFloat(gs.letterSpacing) / s) + 'px';
+        });
+        claim.style.transition = 'opacity .35s ease .8s';
+        claim.style.opacity = 0;
+        glow.style.transition = 'opacity .35s ease .4s';
+      });
+    }
     h.classList.add('vorhang-raus');
     setTimeout(los, 380);
-    setTimeout(() => { h.classList.remove('vorhang-an', 'vorhang-raus'); vorhang.remove(); }, 1050);
+    setTimeout(() => { h.classList.remove('vorhang-an', 'vorhang-raus'); vorhang.remove(); }, 1250);
   };
   const timer = setTimeout(raus, 2500);
   const abkuerzen = () => { clearTimeout(timer); raus(); };

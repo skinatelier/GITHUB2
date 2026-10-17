@@ -525,7 +525,11 @@ section{padding:var(--sec) 0}
 /* Abgang: Vorhang fährt nach oben, Logo fliegt in die Kopfzeile */
 .vorhang-raus .vorhang{cursor:default}
 .vorhang-raus .vorhang-grund{transform:translateY(-100%)}
-.vorhang-raus .vorhang-claim{opacity:0}
+.vorhang-claim{text-align:center}
+.vorhang-claim span{display:block;width:fit-content;margin:0 auto;transform-origin:0 0;white-space:nowrap}
+.vorhang-claim span + span{margin-top:.35em}
+.glow span{display:block;width:fit-content}
+@media (max-width:767px){.hero-text .glow span{margin-left:auto;margin-right:auto}}
 .vorhang-raus .vorhang-logo{animation:none;transition:transform .95s cubic-bezier(.76,0,.24,1)}
 
 /* Einstieg: Porträt fährt hoch, Text erscheint nacheinander */
