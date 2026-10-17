@@ -70,3 +70,36 @@ if (form) {
 if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document) {
   document.querySelectorAll('[data-route]').forEach(a => a.href = 'https://maps.apple.com/?daddr=Breite+Str.+23,+13187+Berlin');
 }
+
+// Zwei-Klick-Einbettungen (Google-Bewertungen, Instagram): erst nach Klick laden
+function einbettungLaden(box) {
+  const tpl = box.querySelector('template');
+  if (!tpl || box.classList.contains('geladen')) return;
+  const ziel = document.createElement('div');
+  ziel.innerHTML = tpl.innerHTML;
+  // Skripte neu anlegen, damit der Browser sie ausführt
+  ziel.querySelectorAll('script').forEach(alt => {
+    const neu = document.createElement('script');
+    [...alt.attributes].forEach(a => neu.setAttribute(a.name, a.value));
+    neu.textContent = alt.textContent;
+    alt.replaceWith(neu);
+  });
+  box.replaceChildren(ziel);
+  box.classList.add('geladen');
+}
+document.querySelectorAll('.einbettung').forEach(box => {
+  const dienst = box.dataset.dienst;
+  let erlaubt = false;
+  try { erlaubt = localStorage.getItem('einwilligung-' + dienst) === 'ja'; } catch (e) {}
+  if (erlaubt) { einbettungLaden(box); return; }
+  box.querySelectorAll('[data-laden]').forEach(k => k.addEventListener('click', () => {
+    if (k.hasAttribute('data-immer')) { try { localStorage.setItem('einwilligung-' + dienst, 'ja'); } catch (e) {} }
+    einbettungLaden(box);
+  }));
+});
+// Einwilligungen widerrufen (Link in der Datenschutzerklärung)
+document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  try { Object.keys(localStorage).filter(k => k.startsWith('einwilligung-')).forEach(k => localStorage.removeItem(k)); } catch (err) {}
+  a.textContent = 'Erledigt: Alle Einwilligungen wurden zurückgesetzt.';
+}));

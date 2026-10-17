@@ -410,8 +410,8 @@ section{padding:var(--sec) 0}
 .header-inner{min-height:104px}
 .logo-fuss{width:250px;height:auto;margin-bottom:16px}
 /* Portrait eng: Gesicht, Hände, Oberkörper */
-.hero-portrait{aspect-ratio:1/1}
-.hero-portrait img{aspect-ratio:auto;width:100%;height:auto;transform:scale(1.85);transform-origin:50% 9%}
+.hero-portrait{aspect-ratio:1/1;background:#e7e8eb}
+.hero-portrait img{aspect-ratio:auto;width:100%;height:auto;transform:translateY(5%) scale(1.62);transform-origin:50% 0%}
 /* Atelier: Wandlogo breit oben, Fenster hoch rechts, darunter Liege und Ecke */
 .atelier-grid.vier{grid-template-columns:1fr 1fr 1fr;grid-template-rows:clamp(220px,24vw,340px) clamp(200px,20vw,280px)}
 .atelier-grid.vier .foto img{width:100%;height:100%;aspect-ratio:auto}
@@ -434,3 +434,20 @@ section{padding:var(--sec) 0}
 .ueber-mich .lead{margin-left:auto;margin-right:auto}
 .ueber-mich .trenner{margin:16px auto 22px}
 .ueber-mich .quali{text-align:left;max-width:600px;margin-left:auto;margin-right:auto}
+
+/* ===== V4: Instagram & Bewertungen, Zwei-Klick-Einbettungen ===== */
+.social-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.5vw,28px);margin-top:clamp(28px,4vw,44px)}
+.social-grid > *{min-width:0}
+.social-karte{background:var(--karte);border:1px solid var(--linie);border-radius:var(--r);padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;gap:20px;box-shadow:var(--schatten)}
+.social-kopf{display:flex;gap:16px;align-items:center}
+.social-kopf h3{margin:0 0 4px}
+.social-kopf p{margin:0;font-size:15.5px}
+.social-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto}
+.social-links .btn{flex:1 1 auto}
+.einbettung{border:1px dashed var(--gold);border-radius:14px;background:rgba(255,255,255,.6);padding:18px;min-height:120px}
+.einbettung.geladen{border:0;padding:0;background:none;min-height:0}
+.einb-titel{font:600 16px/1.4 var(--sans);margin:0 0 6px}
+.einb-text{font-size:14px;color:var(--grau);margin:0 0 14px}
+.einb-knoepfe{display:flex;flex-wrap:wrap;gap:8px}
+.einb-knoepfe .btn{min-height:44px;padding:0 18px;font-size:14.5px}
+@media (max-width:767px){.social-grid{grid-template-columns:1fr}.social-links .btn{flex:1 1 100%}}
