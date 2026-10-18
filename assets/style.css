@@ -627,3 +627,14 @@ html:not(.js) .band-linie{width:120px}
 /* Kopfzeilen-Button bleibt wie in V10 abgenommen: hell mit Goldrand */
 .header-cta{background:transparent;color:var(--ink);border-color:var(--gold);box-shadow:none;min-height:44px;padding:0 22px;font-size:12px;letter-spacing:.17em}
 .header-cta:hover{background:var(--ink);border-color:var(--ink);color:#fbf6ef;box-shadow:none}
+
+/* ===== V17: ohne eigene Fotos – Logo-Karten statt Bilder ===== */
+.logo-karte{margin:0;display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;position:relative;border-radius:var(--r);border:1px solid var(--linie);box-shadow:var(--schatten);
+  background-color:#fff;background-image:radial-gradient(circle at 20% 12%,rgba(233,211,204,.7),transparent 55%),radial-gradient(circle at 85% 92%,rgba(230,207,143,.35),transparent 55%)}
+.logo-karte::after{content:"";position:absolute;inset:10px;border:1px solid var(--linie-soft);border-radius:calc(var(--r) - 6px);pointer-events:none}
+.logo-karte img{width:68%;height:auto}
+.hero-logo .hero-rahmen{display:flex !important;align-items:center;justify-content:center;
+  background-color:#fff !important;background-image:radial-gradient(circle at 20% 12%,rgba(233,211,204,.75),transparent 55%),radial-gradient(circle at 85% 92%,rgba(230,207,143,.4),transparent 55%) !important}
+.hero-logo .hero-rahmen::after{content:"";position:absolute;inset:12px;border:1px solid var(--linie-soft);border-radius:calc(var(--r) - 6px);pointer-events:none}
+.hero-portrait.hero-logo img{width:72%;height:auto;transform:none !important;transition:none !important}
+@media (max-width:767px){.hero-v2 .hero-logo .hero-rahmen{aspect-ratio:16/10}}
