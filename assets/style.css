@@ -912,3 +912,25 @@ html:not(.js) .band-linie{width:120px}
 @media (max-width:560px){.footer-grid{grid-template-columns:1fr}}
 .kat-bild .icon-rund{width:88px;height:88px;flex:none}
 .kat-bild .icon-rund svg{width:38px;height:38px}
+
+/* ===== V20: Desktop-Kopf wie Vorbild (Links nebeneinander), Handy/Tablet bleibt bei Logo mittig + Menü-Panel ===== */
+.kopf-nav,.kopf-ort{display:none}
+.kopf-ort{align-items:center;gap:8px;min-height:44px;padding:0 18px;border:1px solid var(--linie);border-radius:999px;background:#fff;font:500 14.5px/1 var(--sans);letter-spacing:.02em;color:var(--ink);text-decoration:none;box-shadow:0 2px 8px rgba(120,90,60,.06);transition:border-color .2s}
+.kopf-ort svg{width:17px;height:17px;color:var(--gold-text)}
+.kopf-ort:hover{border-color:var(--gold)}
+@media (min-width:1180px){
+  .header-inner{grid-template-columns:auto 1fr auto !important;gap:clamp(24px,3vw,48px) !important;padding-top:14px;padding-bottom:14px}
+  .kopf-links{display:none}
+  .site-header .brand{justify-self:start}
+  .logo-kopf{width:150px}
+  .kopf-nav{display:block;justify-self:center}
+  .kopf-nav ul{list-style:none;display:flex;gap:clamp(22px,2.6vw,40px);margin:0;padding:0}
+  .kopf-nav a{display:block;padding:8px 0 7px;font:500 15px/1.4 var(--sans);letter-spacing:.07em;color:var(--ink);text-decoration:none;border-bottom:1.5px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap}
+  .kopf-nav a:hover{color:var(--gold-text)}
+  .kopf-nav a[aria-current="page"]{color:var(--gold-text);border-color:var(--gold)}
+  .kopf-ort{display:inline-flex}
+  .kopf-rechts{gap:16px}
+  .kopf-pill{min-height:0;padding:13px 26px;border-radius:2px;background:transparent;color:var(--gold-text);font:500 14px/1.2 var(--sans);letter-spacing:.12em}
+  .kopf-pill:hover{background:var(--gold);border-color:var(--gold);color:#fff}
+  .site-header .menu-btn{display:none !important}
+}
