@@ -740,3 +740,175 @@ html:not(.js) .band-linie{width:120px}
   .bu-weiter{min-width:0;padding:0 18px}
   .bu-senden .btn{flex:1 1 100%}
 }
+
+/* ===== V19: Aufbau nach Vorbild (beautiquejn.de) in SKIN-ATELIER-Gestaltung ===== */
+/* Kopf: Logo mittig, rechts Termin-Pille und Menü-Knopf */
+.header-inner{display:grid !important;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding-top:12px;padding-bottom:12px}
+.kopf-links{display:block}
+.site-header .brand{justify-self:center}
+.logo-kopf{width:150px}
+.kopf-rechts{justify-self:end;display:flex;align-items:center;gap:14px}
+.kopf-pill{display:inline-flex;align-items:center;min-height:40px;padding:0 18px;border:1px solid var(--gold);border-radius:999px;font:600 11.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--ink);background:rgba(255,255,255,.7);transition:background-color .2s,color .2s}
+.kopf-pill:hover{background:var(--ink);border-color:var(--ink);color:#fbf6ef}
+.site-header .menu-btn{display:flex !important;flex-direction:column;justify-content:center;gap:6px;width:46px;height:46px;min-height:0;padding:0 8px;margin:0;border:0;border-radius:10px;background:transparent;cursor:pointer}
+.site-header .menu-btn span{display:block;height:1.5px;background:var(--ink);border-radius:2px}
+.site-header .menu-btn:hover span{background:var(--gold-text)}
+.main-nav,.header-cta{display:none !important}
+@media (max-width:767px){.logo-kopf{width:124px}.kopf-pill{display:none}}
+
+/* Menü-Panel von rechts */
+.menue-schleier{position:fixed;inset:0;z-index:60;background:rgba(47,44,43,.45);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;transition:opacity .3s}
+.menue-offen .menue-schleier{opacity:1}
+.menue{position:fixed;top:0;right:0;bottom:0;z-index:61;width:min(420px,88vw);background:var(--ink);color:#f3ebe2;padding:22px 30px 32px;display:flex;flex-direction:column;overflow-y:auto;transform:translateX(100%);transition:transform .35s var(--ease)}
+.menue.offen{transform:none}
+.menue-offen{overflow:hidden}
+.menue-kopf{display:flex;align-items:center;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid rgba(230,207,143,.18)}
+.menue-kopf img{width:120px;height:auto;filter:brightness(0) invert(1) sepia(.35) saturate(1.4);opacity:.92}
+.menue-zu{all:unset;cursor:pointer;font:300 34px/1 var(--sans);color:#e6cf8f;width:40px;height:40px;text-align:center}
+.menue-zu:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:8px}
+.menue-liste{list-style:none;margin:18px 0 28px;padding:0}
+.menue-liste > li{border-bottom:1px solid rgba(230,207,143,.14)}
+.menue-liste > li > a{display:block;padding:15px 0;font:400 25px/1.2 var(--serif);color:#f3ebe2;text-decoration:none;transition:color .2s}
+.menue-liste a:hover,.menue-liste a[aria-current="page"]{color:#e6cf8f}
+.menue-liste ul{list-style:none;margin:-6px 0 12px;padding:0 0 0 16px}
+.menue-liste ul a{display:block;padding:7px 0;font:400 15px/1.4 var(--sans);color:rgba(243,235,226,.72);text-decoration:none}
+.menue-cta{margin-top:auto;align-self:flex-start}
+@media (prefers-reduced-motion:reduce){.menue,.menue-schleier{transition:none}}
+
+/* Knöpfe für dunkle Flächen */
+.btn-gold{background:var(--gold);border-color:var(--gold);color:#fff;text-transform:uppercase;letter-spacing:.14em;font-size:13px}
+.btn-gold:hover{background:#a6822f;border-color:#a6822f}
+.btn-hell{background:transparent;border-color:rgba(230,207,143,.6);color:#f3ebe2;text-transform:uppercase;letter-spacing:.14em;font-size:13px}
+.btn-hell:hover{background:rgba(255,255,255,.08);color:#fff}
+
+/* Dunkle Abschnitte (Anthrazit statt Braun) */
+.dunkel,.abschluss{background:var(--ink);color:#f3ebe2;position:relative}
+.dunkel h2,.abschluss h2{color:#fbf6ef}
+.dunkel h2 em,.abschluss h2 em{color:#e6cf8f}
+.dunkel .label,.abschluss .label{color:#e6cf8f}
+.dunkel p,.abschluss .lead{color:rgba(243,235,226,.82)}
+.dunkel .tag{background:transparent;color:#e6cf8f;border-color:#e6cf8f}
+.dunkel::before,.abschluss::before{content:"";position:absolute;left:0;right:0;top:-1px;height:28px;background:var(--creme);clip-path:ellipse(60% 100% at 50% 0)}
+.abschluss{padding:clamp(80px,9vw,128px) 0}
+.abschluss .actions{justify-content:center}
+
+/* Einstieg: Text links, Logo rechts, Knöpfe und Fakten */
+@media (min-width:768px){.hero-v2-grid .hero-bild{order:2}}
+.hero-v2 .actions{gap:12px 14px}
+.hero-fakten{list-style:none;display:flex;flex-wrap:wrap;gap:14px 28px;margin:30px 0 0;padding:20px 0 0;border-top:1px solid var(--linie-soft)}
+.hero-fakten li{display:flex;flex-direction:column;font-size:13.5px;color:var(--grau)}
+.hero-fakten strong{font:400 21px/1.25 var(--serif);color:var(--ink)}
+@media (max-width:767px){.hero-fakten{justify-content:center;text-align:center}}
+
+/* Kategorie-Karten (Startseite) */
+.kat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.4vw,28px);margin-top:clamp(28px,4vw,48px)}
+.kat-karte{display:flex;flex-direction:column;background:#fff;border:1px solid var(--linie);border-radius:var(--r);overflow:hidden;text-decoration:none;box-shadow:var(--schatten);transition:transform .25s var(--ease),box-shadow .25s}
+.kat-karte:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(120,90,60,.16)}
+.kat-bild{display:grid;place-items:center;aspect-ratio:16/10;background:radial-gradient(circle at 30% 20%,rgba(233,211,204,.85),transparent 60%),radial-gradient(circle at 80% 90%,rgba(230,207,143,.45),transparent 55%),var(--beige);border-bottom:1px solid var(--linie-soft)}
+.kat-bild .icon-rund{background:rgba(255,255,255,.85)}
+.kat-inhalt{display:flex;flex-direction:column;flex:1;padding:22px 24px 20px}
+.kat-inhalt h3{margin:0 0 8px}
+.kat-inhalt p{color:var(--grau);font-size:15.5px;margin:0 0 18px}
+.kat-fuss{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--linie-soft)}
+.kat-preis{font:400 20px/1 var(--serif);color:var(--gold-text)}
+.kat-mehr{font:600 11.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+@media (max-width:900px){.kat-grid{grid-template-columns:1fr}}
+
+/* Über mich (Startseite, dunkel) */
+.ueber-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(32px,6vw,80px);align-items:center}
+.ueber-bild{margin:0;position:relative}
+.ueber-logo{display:flex;align-items:center;justify-content:center;aspect-ratio:4/5;border-radius:var(--r);background:var(--creme);box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.ueber-logo img{width:72%}
+.ueber-badge{position:absolute;right:-14px;bottom:28px;background:var(--ink);border:1px solid rgba(230,207,143,.5);border-radius:12px;padding:12px 16px;font:400 16px/1.3 var(--serif);color:#fbf6ef;max-width:210px}
+.ueber-badge small{display:block;font:600 10.5px/1.4 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:#e6cf8f}
+.ueber-fakten{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:26px 0 30px;padding:22px 0 0;border-top:1px solid rgba(230,207,143,.22)}
+.ueber-fakten li{display:flex;flex-direction:column;font-size:13.5px;color:rgba(243,235,226,.7)}
+.ueber-fakten strong{font:400 22px/1.2 var(--serif);color:#e6cf8f}
+@media (max-width:767px){.ueber-grid{grid-template-columns:1fr}.ueber-logo{aspect-ratio:16/10}.ueber-badge{position:relative;right:auto;bottom:auto;display:block;width:fit-content;margin:-24px 14px 0 auto}.ueber-fakten{grid-template-columns:1fr}}
+
+/* Alle Behandlungen */
+.beh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:12px}
+.beh-karte{background:var(--karte);border:1px solid var(--linie);border-radius:16px;padding:22px 24px;display:flex;flex-direction:column;transition:background-color .2s,box-shadow .2s}
+.beh-karte:hover{background:#fff;box-shadow:var(--schatten)}
+.beh-karte h3{margin:0 0 8px}
+.beh-karte h3 a{text-decoration:none}
+.beh-karte > p{color:var(--grau);font-size:15.5px}
+.beh-meta{display:flex;justify-content:space-between;align-items:baseline;margin:auto 0 12px !important;padding-top:12px;border-top:1px solid var(--linie-soft);font-size:14.5px}
+.beh-preis{font:400 21px/1 var(--serif);color:var(--ink)}
+.beh-links{display:flex;flex-wrap:wrap;gap:10px 22px;margin:0;font-size:14.5px}
+
+/* Behandlungsseite */
+.brotkrumen{display:flex;flex-wrap:wrap;gap:8px;padding-top:18px;font-size:13px;color:var(--grau)}
+.brotkrumen a{text-decoration:none}
+.brotkrumen a:hover{color:var(--gold-text)}
+.beh-hero{padding:clamp(24px,4vw,48px) 0 var(--sec)}
+.beh-hero-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(32px,5vw,72px);align-items:start}
+.beh-bild{margin:0;position:sticky;top:110px}
+.beh-bild-logo{display:flex;align-items:center;justify-content:center;aspect-ratio:4/5;border-radius:var(--r);border:1px solid var(--linie);box-shadow:var(--schatten);background:radial-gradient(circle at 25% 15%,rgba(233,211,204,.8),transparent 55%),radial-gradient(circle at 85% 90%,rgba(230,207,143,.4),transparent 55%),#fff}
+.beh-bild-logo img{width:70%}
+.beh-ab{position:absolute;left:18px;bottom:18px;background:var(--ink);color:#fbf6ef;border-radius:12px;padding:10px 16px;font:400 24px/1.1 var(--serif)}
+.beh-ab small{display:block;font:600 10px/1.4 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:#e6cf8f}
+.beh-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.beh-tags span{font:600 10.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gold-text);border:1px solid var(--linie);border-radius:999px;padding:7px 12px;background:rgba(255,255,255,.6)}
+.beh-hero h1{font-size:clamp(38px,4.6vw,58px)}
+.beh-hero .claim{margin:-4px 0 16px}
+.beh-check{list-style:none;margin:20px 0 26px;padding:0;display:grid;gap:10px}
+.beh-check li{display:flex;gap:12px;align-items:flex-start;font-size:16px}
+.beh-check li::before{content:"";flex:0 0 20px;height:20px;border-radius:50%;border:1px solid var(--gold);background:radial-gradient(circle,var(--gold) 0 3px,transparent 3.5px);margin-top:3px}
+.beh-preisbox{background:#fff;border:1px solid var(--linie);border-radius:var(--r);padding:22px 24px;box-shadow:var(--schatten)}
+.beh-preisbox ul{list-style:none;margin:0;padding:0}
+.beh-preisbox li{display:grid;grid-template-columns:1fr auto auto;gap:16px;padding:10px 0;border-bottom:1px solid var(--linie-soft);font-size:15.5px}
+.beh-preisbox li span:last-child{font:400 19px/1.2 var(--serif);min-width:56px;text-align:right}
+.beh-preisbox .actions{margin-top:20px}
+.beh-info{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,5vw,72px);align-items:start}
+.beh-ablauf{counter-reset:schritt;list-style:none;margin:24px 0 0;padding:0;display:grid;gap:12px}
+.beh-ablauf li{counter-increment:schritt;display:flex;gap:16px;align-items:center;background:var(--karte);border:1px solid var(--linie-soft);border-radius:14px;padding:12px 16px}
+.beh-ablauf li::before{content:counter(schritt,decimal-leading-zero);font:400 20px/1 var(--serif);color:var(--gold-text);min-width:28px}
+.beh-seite{display:grid;gap:14px}
+.beh-seite > div{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:18px 20px}
+.beh-seite .label{margin-bottom:8px}
+.beh-seite p:last-child{margin:0;color:var(--grau);font-size:15.5px}
+.beh-tabelle{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--linie);border-radius:16px;overflow:hidden;font-size:15.5px}
+.beh-tabelle th{font:600 11px/1.4 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gold-text);text-align:left;padding:14px 18px;background:rgba(243,233,225,.6)}
+.beh-tabelle td{padding:14px 18px;border-top:1px solid var(--linie-soft)}
+.beh-tabelle td:last-child,.beh-tabelle th:last-child{text-align:right;white-space:nowrap}
+@media (max-width:860px){
+  .beh-hero-grid,.beh-info{grid-template-columns:1fr}
+  .beh-bild{position:relative;top:0}
+  .beh-bild-logo{aspect-ratio:16/10}
+}
+@media (max-width:480px){.beh-preisbox li{grid-template-columns:1fr auto}.beh-preisbox li .muted{grid-column:1;grid-row:2;font-size:13.5px;margin-top:-8px}.beh-preisbox li span:last-child{grid-row:1/3;grid-column:2;align-self:center}.beh-tabelle th,.beh-tabelle td{padding:12px}}
+
+/* Über mich: Zitat und Werte */
+.zitat-band{padding:clamp(64px,8vw,104px) 0}
+.zitat{font:italic 400 clamp(30px,4vw,50px)/1.2 var(--serif);color:#fbf6ef !important;margin:0 0 20px}
+.werte-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:clamp(28px,4vw,44px)}
+.wert{background:#fff;border:1px solid var(--linie);border-radius:var(--r);padding:24px 22px;box-shadow:var(--schatten)}
+.wert h3{margin:14px 0 6px}
+.wert p{color:var(--grau);font-size:15.5px;margin:0}
+@media (max-width:1000px){.werte-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.werte-grid{grid-template-columns:1fr}}
+
+/* Absage-Seite */
+.absage-stufen{display:grid;gap:14px;margin-top:24px}
+.absage-stufe{display:grid;grid-template-columns:130px 1fr;gap:20px;align-items:center;background:#fff;border:1px solid var(--linie);border-radius:16px;padding:20px 24px}
+.absage-stufe p{margin:0}
+.absage-wert{font:400 30px/1 var(--serif);color:var(--gold-text)}
+@media (max-width:560px){.absage-stufe{grid-template-columns:1fr;gap:8px}}
+
+/* Fußzeile dunkel mit vier Spalten */
+.site-footer{background:var(--ink);color:rgba(243,235,226,.78);border-top:0}
+.site-footer .label{color:#e6cf8f}
+.site-footer a{color:#f3ebe2}
+.footer-grid{grid-template-columns:1.4fr 1fr 1fr 1.1fr}
+.logo-fuss{width:200px;filter:brightness(0) invert(1) sepia(.35) saturate(1.4);opacity:.92}
+.footer-line{color:rgba(243,235,226,.7)}
+.fuss-liste{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.fuss-social{display:flex;gap:10px}
+.fuss-social a{display:grid;place-items:center;width:38px;height:38px;border:1px solid rgba(230,207,143,.4);border-radius:50%}
+.fuss-social svg{width:18px;height:18px;color:#e6cf8f}
+.footer-bottom{border-top-color:rgba(230,207,143,.18);color:rgba(243,235,226,.55)}
+@media (max-width:900px){.footer-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.footer-grid{grid-template-columns:1fr}}
+.kat-bild .icon-rund{width:88px;height:88px;flex:none}
+.kat-bild .icon-rund svg{width:38px;height:38px}

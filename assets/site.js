@@ -6,15 +6,22 @@ const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.
 }), { threshold: .1, rootMargin: '0px 0px -40px 0px' }) : null;
 document.querySelectorAll('.reveal').forEach(el => io ? io.observe(el) : el.classList.add('in'));
 
-// Mobilmenü
-const nav = document.querySelector('.main-nav');
+// Menü: Panel von rechts (wie Vorbild), schließt per ×, Schleier oder Esc
+const menue = document.getElementById('menue');
 const mb = document.querySelector('.menu-btn');
-if (nav && mb) {
-  mb.addEventListener('click', () => {
-    const open = nav.classList.toggle('open');
-    mb.setAttribute('aria-expanded', open);
-    mb.textContent = open ? 'Schließen' : 'Menü';
-  });
+const schleier = document.querySelector('.menue-schleier');
+if (menue && mb) {
+  const setzen = auf => {
+    mb.setAttribute('aria-expanded', auf);
+    document.documentElement.classList.toggle('menue-offen', auf);
+    if (auf) { menue.hidden = false; schleier.hidden = false; requestAnimationFrame(() => menue.classList.add('offen')); menue.querySelector('.menue-zu').focus(); }
+    else { menue.classList.remove('offen'); setTimeout(() => { if (!menue.classList.contains('offen')) { menue.hidden = true; schleier.hidden = true; } }, 350); mb.focus(); }
+  };
+  mb.addEventListener('click', () => setzen(true));
+  menue.querySelector('.menue-zu').addEventListener('click', () => setzen(false));
+  schleier.addEventListener('click', () => setzen(false));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && menue.classList.contains('offen')) setzen(false); });
+  menue.querySelectorAll('a[href*="#"]').forEach(a => a.addEventListener('click', () => setzen(false)));
 }
 
 // Jahr im Footer
