@@ -128,7 +128,7 @@ document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.ad
   pruefen();
 })();
 
-// PMU-Pen-Animation (Augenbrauen-PMU): Vorzeichnung, dann Powder-Schattierung Punkt für Punkt
+// PMU-Pen-Animation (Permanent Make-up für Augenbrauen): Vorzeichnung, dann Powder-Schattierung Punkt für Punkt
 (() => {
   const fig = document.querySelector('.pmu-anim');
   if (!fig) return;
@@ -330,18 +330,18 @@ document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.ad
   // Schritt 1: Behandlungen
   const liste = $('[data-liste]');
   const kats = [...new Set(LEISTUNGEN.map(l => l.kat))];
-  liste.innerHTML = kats.map(k => `<p class="bu-kat" id="kat-${k === 'Augenbrauen-PMU' ? 'pmu' : 'gesicht'}">${esc(k)}</p>` +
+  liste.innerHTML = kats.map(k => `<p class="bu-kat" id="kat-${k === 'Permanent Make-up für Augenbrauen' ? 'pmu' : 'gesicht'}">${esc(k)}</p>` +
     LEISTUNGEN.filter(l => l.kat === k).map(l => `
     <div class="bu-karte" data-id="${l.id}">
       <button class="bu-karte-kopf" type="button" aria-expanded="false">
         <span class="bu-haken" aria-hidden="true"></span>
-        <span class="bu-name">${esc(l.name)}<span class="bu-dauer">${l.varianten.length ? 'ab ' + Math.min(...l.varianten.map(v => v.min)) : l.min} Min.</span></span>
+        <span class="bu-name">${esc(l.name)}<span class="bu-dauer">${l.varianten.length ? 'ab ' + Math.min(...l.varianten.map(v => v.min)) : l.min} Minuten</span></span>
         <span class="bu-karte-preis">${esc(l.preis)}</span>
       </button>
       <div class="bu-karte-mehr" hidden>
         <p>${esc(l.text)}</p>
         ${l.varianten.length ? `<fieldset class="bu-varianten"><legend>Variante wählen</legend>${l.varianten.map((v, i) => `
-          <label class="bu-variante"><input type="radio" name="var-${l.id}" value="${i}"${i === 0 ? ' checked' : ''}><span>${esc(v.name)}</span><span class="muted">${v.min} Min.</span><span>${esc(v.preis)}</span></label>`).join('')}</fieldset>` : ''}
+          <label class="bu-variante"><input type="radio" name="var-${l.id}" value="${i}"${i === 0 ? ' checked' : ''}><span>${esc(v.name)}</span><span class="muted">${v.min} Minuten</span><span>${esc(v.preis)}</span></label>`).join('')}</fieldset>` : ''}
         <button class="bu-entfernen" type="button">Aus Auswahl entfernen</button>
       </div>
     </div>`).join('')).join('');
@@ -386,7 +386,7 @@ document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.ad
   tageEl.innerHTML = tage.map((d, i) => {
     const zu = i === 0 || !OEFFNUNG[d.getDay()] || feiertag(d);
     return `<button class="bu-tag" type="button" role="option" aria-selected="false" data-tag="${iso(d)}"${zu ? ' disabled' : ''}
-      aria-label="${datumLang(d)}${zu ? ', nicht buchbar' : ''}"><span>${WOCHENTAG[d.getDay()]}</span><strong>${d.getDate()}</strong><span>${feiertag(d) ? 'Ftg.' : MONAT[d.getMonth()]}</span></button>`;
+      aria-label="${datumLang(d)}${zu ? ', nicht buchbar' : ''}"><span>${WOCHENTAG[d.getDay()]}</span><strong>${d.getDate()}</strong><span>${feiertag(d) ? 'Feiertag' : MONAT[d.getMonth()]}</span></button>`;
   }).join('');
 
   // Demo: Beispielzeiten (Öffnungszeiten minus zufällig, aber gleichbleibend belegte Zeiten)
@@ -442,9 +442,9 @@ document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.ad
   const nachricht = () => {
     const f = form.elements, s = summe(), d = new Date(st.tag + 'T00:00');
     return ['Hallo Malina, ich möchte gerne einen Termin anfragen:',
-      ...posten().map(p => `• ${p.name}, ${p.min} Min., ${p.preis}`),
+      ...posten().map(p => `• ${p.name}, ${p.min} Minuten, ${p.preis}`),
       `Wunschtermin: ${datumLang(d)}, ${st.zeit} Uhr`,
-      `Gesamt: ${s.min} Min., ${s.preis} €`, '',
+      `Gesamt: ${s.min} Minuten, ${s.preis} €`, '',
       `Name: ${f.vorname.value.trim()} ${f.nachname.value.trim()}`,
       `E-Mail: ${f.email.value.trim()}`, `Telefon: ${f.tel.value.trim()}`,
       f.notiz.value.trim() ? `Anmerkungen: ${f.notiz.value.trim()}` : '', '',
@@ -453,8 +453,8 @@ document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.ad
   const zusammenfassen = () => {
     const f = form.elements, s = summe(), d = new Date(st.tag + 'T00:00');
     $('[data-zusammenfassung]').innerHTML = `
-      <ul class="bu-posten">${posten().map(p => `<li><span>${esc(p.name)}<span class="muted">${p.min} Min.</span></span><span>${esc(p.preis)}</span></li>`).join('')}
-        <li class="bu-gesamt"><span>Gesamt<span class="muted">${s.min} Min.</span></span><span>${s.preis} €</span></li></ul>
+      <ul class="bu-posten">${posten().map(p => `<li><span>${esc(p.name)}<span class="muted">${p.min} Minuten</span></span><span>${esc(p.preis)}</span></li>`).join('')}
+        <li class="bu-gesamt"><span>Gesamt<span class="muted">${s.min} Minuten</span></span><span>${s.preis} €</span></li></ul>
       <dl class="bu-angaben">
         <dt>Termin</dt><dd>${datumLang(d)}, ${st.zeit} Uhr</dd>
         <dt>Ort</dt><dd>SKIN ATELIER, Breite Straße 23, 13187 Berlin-Pankow</dd>
@@ -474,7 +474,7 @@ document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.ad
   const weiter = $('[data-weiter]'), zurueck = $('[data-zurueck]');
   const aktualisieren = () => {
     const s = summe(), n = st.auswahl.size;
-    $('[data-summe-text]').textContent = n ? `${n} ${n === 1 ? 'Behandlung' : 'Behandlungen'} · ${s.min} Min.` : 'Noch keine Behandlung gewählt';
+    $('[data-summe-text]').textContent = n ? `${n} ${n === 1 ? 'Behandlung' : 'Behandlungen'} · ${s.min} Minuten` : 'Noch keine Behandlung gewählt';
     $('[data-summe-preis]').textContent = n ? `${s.preis} €` : '';
     weiter.disabled = st.schritt === 1 ? !n : st.schritt === 2 ? !st.zeit : false;
     weiter.hidden = st.schritt === 4;
@@ -495,7 +495,7 @@ document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.ad
   weiter.addEventListener('click', () => { if (st.schritt === 3 && !datenOk()) return; zeigen(st.schritt + 1); });
   zurueck.addEventListener('click', () => zeigen(st.schritt - 1));
 
-  // Vorauswahl über die Adresse, z. B. termin.html?id=pmu-vorberatung oder ?kat=pmu
+  // Vorauswahl über die Adresse, z. B. termin.html?id=vorberatung-permanent-make-up oder ?kat=pmu
   const q = new URLSearchParams(location.search);
   const vor = q.get('id') && liste.querySelector(`.bu-karte[data-id="${CSS.escape(q.get('id'))}"]`);
   if (vor) karteSetzen(vor, true);
