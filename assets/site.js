@@ -104,11 +104,11 @@ document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.ad
   a.textContent = 'Erledigt: Alle Einwilligungen wurden zurückgesetzt.';
 }));
 
-// Untere Terminleiste (Handy): immer sichtbar, außer wenn ein großer Termin-Button im Bild ist; auf der Kontaktseite nie
+// Untere Terminleiste (Handy): immer sichtbar, außer wenn ein großer Termin-Button im Bild ist; auf Kontakt- und Terminseite nie
 (() => {
   const leiste = document.querySelector('.mobile-cta');
   if (!leiste) return;
-  if (/kontakt\.html$/.test(location.pathname)) { leiste.remove(); return; }
+  if (/(kontakt|termin)\.html$/.test(location.pathname)) { leiste.remove(); return; }
   document.body.classList.add('cta-aktiv');
   const knoepfe = [...document.querySelectorAll('main .btn-primary')];
   const pruefen = () => {
@@ -285,4 +285,214 @@ document.querySelectorAll('[data-einwilligung-zuruecksetzen]').forEach(a => a.ad
   const abkuerzen = () => { clearTimeout(timer); raus(); };
   vorhang.addEventListener('click', abkuerzen);
   ['keydown', 'wheel', 'touchstart'].forEach(t => addEventListener(t, abkuerzen, { once: true, passive: true }));
+})();
+
+// Terminbuchung (termin.html): 4 Schritte Behandlung → Termin → Daten → Zusammenfassung.
+// Stufe 1 (Demo): freie Zeiten sind Beispielzeiten, gesendet wird per WhatsApp oder E-Mail durch die Person selbst.
+// Stufe 2: zeitenLaden() fragt später den Buchungsserver nach echten freien Zeiten.
+(() => {
+  const bu = document.getElementById('buchung');
+  const datenEl = document.getElementById('buchung-daten');
+  if (!bu || !datenEl) return;
+  const LEISTUNGEN = JSON.parse(datenEl.textContent);
+  const SCHRITTE = ['Behandlung', 'Termin', 'Deine Daten', 'Zusammenfassung'];
+  const TAGE_VORAUS = 42;
+  const OEFFNUNG = { 1: [10, 19], 2: [10, 19], 3: [10, 19], 4: [10, 19], 5: [10, 19], 6: [10, 15] }; // Demo, So geschlossen
+  const WOCHENTAG = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+  const WOCHENTAG_LANG = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+  const MONAT = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+  const MONAT_LANG = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+
+  const $ = s => bu.querySelector(s);
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const euro = p => parseInt(String(p).replace(/\D/g, ''), 10) || 0;
+  const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const datumLang = d => `${WOCHENTAG_LANG[d.getDay()]}, ${d.getDate()}. ${MONAT_LANG[d.getMonth()]} ${d.getFullYear()}`;
+  const uhr = m => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+
+  const st = { schritt: 1, auswahl: new Map(), tag: null, zeit: null };
+
+  // Gewählte Behandlung mit Variante → {name, min, preis}
+  const posten = () => [...st.auswahl].map(([id, vi]) => {
+    const l = LEISTUNGEN.find(x => x.id === id);
+    const v = l.varianten.length ? l.varianten[vi] : null;
+    return { name: l.name + (v ? ` (${v.name})` : ''), min: v ? v.min : l.min, preis: v ? v.preis : l.preis };
+  });
+  const summe = () => posten().reduce((a, p) => ({ min: a.min + p.min, preis: a.preis + euro(p.preis) }), { min: 0, preis: 0 });
+
+  // Schritt 1: Behandlungen
+  const liste = $('[data-liste]');
+  const kats = [...new Set(LEISTUNGEN.map(l => l.kat))];
+  liste.innerHTML = kats.map(k => `<p class="bu-kat" id="kat-${k === 'Augenbrauen-PMU' ? 'pmu' : 'gesicht'}">${esc(k)}</p>` +
+    LEISTUNGEN.filter(l => l.kat === k).map(l => `
+    <div class="bu-karte" data-id="${l.id}">
+      <button class="bu-karte-kopf" type="button" aria-expanded="false">
+        <span class="bu-haken" aria-hidden="true"></span>
+        <span class="bu-name">${esc(l.name)}<span class="bu-dauer">${l.varianten.length ? 'ab ' + Math.min(...l.varianten.map(v => v.min)) : l.min} Min.</span></span>
+        <span class="bu-karte-preis">${esc(l.preis)}</span>
+      </button>
+      <div class="bu-karte-mehr" hidden>
+        <p>${esc(l.text)}</p>
+        ${l.varianten.length ? `<fieldset class="bu-varianten"><legend>Variante wählen</legend>${l.varianten.map((v, i) => `
+          <label class="bu-variante"><input type="radio" name="var-${l.id}" value="${i}"${i === 0 ? ' checked' : ''}><span>${esc(v.name)}</span><span class="muted">${v.min} Min.</span><span>${esc(v.preis)}</span></label>`).join('')}</fieldset>` : ''}
+        <button class="bu-entfernen" type="button">Aus Auswahl entfernen</button>
+      </div>
+    </div>`).join('')).join('');
+
+  const karteSetzen = (karte, an) => {
+    const id = karte.dataset.id;
+    if (an) {
+      const r = karte.querySelector('input[type=radio]:checked');
+      st.auswahl.set(id, r ? +r.value : 0);
+    } else st.auswahl.delete(id);
+    karte.classList.toggle('gewaehlt', an);
+    karte.querySelector('.bu-karte-kopf').setAttribute('aria-expanded', an);
+    karte.querySelector('.bu-karte-mehr').hidden = !an;
+    st.tag = null; st.zeit = null; // Dauer geändert → Termin neu wählen
+    aktualisieren();
+  };
+  liste.addEventListener('click', e => {
+    const karte = e.target.closest('.bu-karte');
+    if (!karte) return;
+    if (e.target.closest('.bu-karte-kopf')) karteSetzen(karte, !st.auswahl.has(karte.dataset.id));
+    if (e.target.closest('.bu-entfernen')) karteSetzen(karte, false);
+  });
+  liste.addEventListener('change', e => {
+    const karte = e.target.closest('.bu-karte');
+    if (karte && e.target.type === 'radio') { st.auswahl.set(karte.dataset.id, +e.target.value); st.tag = null; st.zeit = null; aktualisieren(); }
+  });
+
+  // Schritt 2: Tage und Uhrzeiten
+  const ostern = j => { // Gaußsche Osterformel
+    const a = j % 19, b = Math.floor(j / 100), c = j % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25),
+      g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4,
+      l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451), mo = Math.floor((h + l - 7 * m + 114) / 31);
+    return new Date(j, mo - 1, ((h + l - 7 * m + 114) % 31) + 1);
+  };
+  const feiertag = d => { // Berlin
+    const j = d.getFullYear(), o = ostern(j), plus = n => iso(new Date(o.getFullYear(), o.getMonth(), o.getDate() + n));
+    return [`${j}-01-01`, `${j}-03-08`, `${j}-05-01`, `${j}-10-03`, `${j}-12-25`, `${j}-12-26`, plus(-2), plus(1), plus(39), plus(50)].includes(iso(d));
+  };
+  const tageEl = $('[data-tage]');
+  const heute = new Date(); heute.setHours(0, 0, 0, 0);
+  const tage = Array.from({ length: TAGE_VORAUS }, (_, i) => new Date(heute.getFullYear(), heute.getMonth(), heute.getDate() + i));
+  tageEl.innerHTML = tage.map((d, i) => {
+    const zu = i === 0 || !OEFFNUNG[d.getDay()] || feiertag(d);
+    return `<button class="bu-tag" type="button" role="option" aria-selected="false" data-tag="${iso(d)}"${zu ? ' disabled' : ''}
+      aria-label="${datumLang(d)}${zu ? ', nicht buchbar' : ''}"><span>${WOCHENTAG[d.getDay()]}</span><strong>${d.getDate()}</strong><span>${feiertag(d) ? 'Ftg.' : MONAT[d.getMonth()]}</span></button>`;
+  }).join('');
+
+  // Demo: Beispielzeiten (Öffnungszeiten minus zufällig, aber gleichbleibend belegte Zeiten)
+  const zeitenLaden = (tagIso, dauer) => new Promise(ok => setTimeout(() => {
+    const d = new Date(tagIso + 'T00:00'), [von, bis] = OEFFNUNG[d.getDay()];
+    const frei = [];
+    for (let m = von * 60; m + dauer <= bis * 60; m += 30) {
+      const h = [...(tagIso + m)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 997, 7);
+      if (h % 10 >= 4) frei.push(uhr(m));
+    }
+    ok(frei);
+  }, 450));
+
+  const zeitenWrap = $('[data-zeiten-wrap]'), zeitenEl = $('[data-zeiten]');
+  tageEl.addEventListener('click', async e => {
+    const b = e.target.closest('.bu-tag');
+    if (!b || b.disabled) return;
+    st.tag = b.dataset.tag; st.zeit = null;
+    tageEl.querySelectorAll('.bu-tag').forEach(x => x.setAttribute('aria-selected', x === b));
+    zeitenWrap.hidden = false;
+    $('[data-zeiten-titel]').textContent = `Freie Zeiten am ${datumLang(new Date(st.tag + 'T00:00')).replace(/ \d{4}$/, '')}`;
+    zeitenEl.innerHTML = '<p class="bu-laden">Freie Zeiten werden geladen …</p>';
+    aktualisieren();
+    const frei = await zeitenLaden(st.tag, summe().min);
+    if (st.tag !== b.dataset.tag) return;
+    zeitenEl.innerHTML = frei.length
+      ? frei.map(z => `<button class="bu-zeit" type="button" role="option" aria-selected="false">${z}</button>`).join('')
+      : '<p class="bu-laden">An diesem Tag ist für deine Behandlung leider nichts frei. Wähle bitte einen anderen Tag.</p>';
+  });
+  zeitenEl.addEventListener('click', e => {
+    const b = e.target.closest('.bu-zeit');
+    if (!b) return;
+    st.zeit = b.textContent;
+    zeitenEl.querySelectorAll('.bu-zeit').forEach(x => x.setAttribute('aria-selected', x === b));
+    aktualisieren();
+  });
+
+  // Schritt 3: Kontaktdaten prüfen
+  const form = document.getElementById('bu-daten');
+  form.addEventListener('submit', e => e.preventDefault());
+  const datenOk = () => {
+    let ok = true;
+    [...form.elements].filter(el => el.required).forEach(el => {
+      const bad = el.type === 'checkbox' ? !el.checked : el.type === 'email' ? !/^\S+@\S+\.\S+$/.test(el.value.trim()) : !el.value.trim();
+      el.closest('.field').classList.toggle('invalid', bad);
+      el.setAttribute('aria-invalid', bad);
+      if (bad && ok) { el.focus(); ok = false; }
+    });
+    return ok;
+  };
+
+  // Schritt 4: Zusammenfassung und Nachricht
+  const nachricht = () => {
+    const f = form.elements, s = summe(), d = new Date(st.tag + 'T00:00');
+    return ['Hallo Malina, ich möchte gerne einen Termin anfragen:',
+      ...posten().map(p => `• ${p.name}, ${p.min} Min., ${p.preis}`),
+      `Wunschtermin: ${datumLang(d)}, ${st.zeit} Uhr`,
+      `Gesamt: ${s.min} Min., ${s.preis} €`, '',
+      `Name: ${f.vorname.value.trim()} ${f.nachname.value.trim()}`,
+      `E-Mail: ${f.email.value.trim()}`, `Telefon: ${f.tel.value.trim()}`,
+      f.notiz.value.trim() ? `Anmerkungen: ${f.notiz.value.trim()}` : '', '',
+      'Die Bedingungen zu Absage und Verschiebung habe ich gelesen.'].filter((z, i, a) => z !== '' || a[i - 1] !== '').join('\n');
+  };
+  const zusammenfassen = () => {
+    const f = form.elements, s = summe(), d = new Date(st.tag + 'T00:00');
+    $('[data-zusammenfassung]').innerHTML = `
+      <ul class="bu-posten">${posten().map(p => `<li><span>${esc(p.name)}<span class="muted">${p.min} Min.</span></span><span>${esc(p.preis)}</span></li>`).join('')}
+        <li class="bu-gesamt"><span>Gesamt<span class="muted">${s.min} Min.</span></span><span>${s.preis} €</span></li></ul>
+      <dl class="bu-angaben">
+        <dt>Termin</dt><dd>${datumLang(d)}, ${st.zeit} Uhr</dd>
+        <dt>Ort</dt><dd>SKIN ATELIER, Breite Straße 23, 13187 Berlin-Pankow</dd>
+        <dt>Name</dt><dd>${esc(f.vorname.value.trim() + ' ' + f.nachname.value.trim())}</dd>
+        <dt>Kontakt</dt><dd>${esc(f.email.value.trim())} · ${esc(f.tel.value.trim())}</dd>
+        ${f.notiz.value.trim() ? `<dt>Anmerkungen</dt><dd>${esc(f.notiz.value.trim())}</dd>` : ''}
+      </dl>`;
+  };
+  bu.querySelectorAll('[data-senden]').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = nachricht();
+    if (a.dataset.senden === 'whatsapp') window.open('https://wa.me/4916095902220?text=' + encodeURIComponent(t), '_blank', 'noopener');
+    else location.href = 'mailto:info@skinatelier.studio?subject=' + encodeURIComponent('Terminanfrage ' + datumLang(new Date(st.tag + 'T00:00')) + ', ' + st.zeit + ' Uhr') + '&body=' + encodeURIComponent(t);
+  }));
+
+  // Fortschritt, Leiste unten, Navigation
+  const weiter = $('[data-weiter]'), zurueck = $('[data-zurueck]');
+  const aktualisieren = () => {
+    const s = summe(), n = st.auswahl.size;
+    $('[data-summe-text]').textContent = n ? `${n} ${n === 1 ? 'Behandlung' : 'Behandlungen'} · ${s.min} Min.` : 'Noch keine Behandlung gewählt';
+    $('[data-summe-preis]').textContent = n ? `${s.preis} €` : '';
+    weiter.disabled = st.schritt === 1 ? !n : st.schritt === 2 ? !st.zeit : false;
+    weiter.hidden = st.schritt === 4;
+    zurueck.hidden = st.schritt === 1;
+    bu.querySelectorAll('.bu-fortschritt li').forEach((li, i) => { li.classList.toggle('fertig', i < st.schritt - 1); li.classList.toggle('aktiv', i === st.schritt - 1); });
+    $('.bu-schritt-text').textContent = `Schritt ${st.schritt} von 4, ${SCHRITTE[st.schritt - 1]}`;
+  };
+  const zeigen = n => {
+    if (n === 2 && !st.tag) { zeitenWrap.hidden = true; tageEl.querySelectorAll('.bu-tag').forEach(x => x.setAttribute('aria-selected', false)); }
+    if (n === 4) zusammenfassen();
+    st.schritt = n;
+    bu.querySelectorAll('.bu-schritt').forEach(el => el.hidden = +el.dataset.schritt !== n);
+    aktualisieren();
+    bu.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const titel = bu.querySelector(`[data-schritt="${n}"] .bu-titel`);
+    titel.setAttribute('tabindex', '-1'); titel.focus({ preventScroll: true });
+  };
+  weiter.addEventListener('click', () => { if (st.schritt === 3 && !datenOk()) return; zeigen(st.schritt + 1); });
+  zurueck.addEventListener('click', () => zeigen(st.schritt - 1));
+
+  // Vorauswahl über die Adresse, z. B. termin.html?id=pmu-vorberatung oder ?kat=pmu
+  const q = new URLSearchParams(location.search);
+  const vor = q.get('id') && liste.querySelector(`.bu-karte[data-id="${CSS.escape(q.get('id'))}"]`);
+  if (vor) karteSetzen(vor, true);
+  const kat = q.get('kat') && document.getElementById('kat-' + q.get('kat'));
+  if (kat && !vor) setTimeout(() => kat.scrollIntoView({ block: 'center' }), 100);
+  aktualisieren();
 })();
